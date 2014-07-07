@@ -1,5 +1,5 @@
 (function(){
-  app = angular.module('popcornApp', ['ngRoute', 'popcornApp.controllers', 'popcornApp.services']);
+  app = angular.module('popcornApp', ['ngRoute', 'ngCookies', 'popcornApp.controllers', 'popcornApp.services', 'popcornApp.directives']);
 
   app.config(function($routeProvider, $locationProvider) {
     $routeProvider
@@ -10,9 +10,16 @@
           templateUrl: '/templates/movies.html'
         })
       .when('/movie/:movie_id', 
+        { controller: 'MovieController', templateUrl: '/templates/movie.html' })
+      .when('/login', 
         {
-          controller: 'MovieController',
-          templateUrl: '/templates/movie.html'
+          templateUrl: '/templates/login.html', 
+          controller: 'LoginController'
+        })
+       .when('/user/:user_id', 
+        {
+          templateUrl: '/templates/profile.html', 
+          controller: 'ProfileController'
         })
       .otherwise({redirectTo: '/'});
     $locationProvider.html5Mode(true);

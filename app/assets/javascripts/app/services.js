@@ -1,4 +1,6 @@
-angular.module('popcornApp.services', []).service('MoviesService', function($http, $q) {
+services_module = angular.module('popcornApp.services', []);
+
+services_module.service('MoviesService', function($http, $q) {
   this.movies = function(name) {
     var d = $q.defer();
 
@@ -23,3 +25,47 @@ angular.module('popcornApp.services', []).service('MoviesService', function($htt
     return d.promise;
   };
 });
+
+services_module.service('UserService', 
+     function($rootScope, $q, $cookieStore) {
+       var service = this;
+       this._user = null;
+       this.setCurrentUser = function(u) {
+         service._user = u;
+        $cookieStore.put('user', u);
+        $rootScope.$broadcast("user:set", u);
+       };
+
+       this.currentUser = function() {
+         var d = $q.defer();
+         if(service._user) {
+           d.resolve(service._user);
+         } else if($cookieStore.get('user')) {
+           service.setCurrentUser($cookieStore.get('user'));
+           d.resolve(service._user);
+         } else {
+           d.resolve(null);
+         }
+         return d.promise;
+       };
+
+       this.login = function(email) {
+         var d = $q.defer();
+         var user = {
+           email: email,
+           id: 1
+         };
+
+         service.setCurrentUser(user);
+         d.resolve(user);
+         return d.promise;
+       };
+       this.logout = function() {
+         var d = $q.defer();
+         service._user = null;
+         $cookieStore.remove('user');
+         $rootScope.$broadcast("user:unset");
+         d.resolve();
+         return d.promise;
+       };
+    });

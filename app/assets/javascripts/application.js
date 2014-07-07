@@ -10,7 +10,8 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//=require underscore
 //=require angular
 //=require angular-route
-//=require underscore
+//=require angular-cookies
 //= require_tree .
