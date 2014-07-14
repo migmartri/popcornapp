@@ -1,4 +1,12 @@
 <div class="row">
+  <div class="row">
+    <select ng-model="chart" class="form-control">
+      <option value="featured">Featured</option>
+      <option value="most_popular">Most Popular</option>
+      <option value="trending">Trending</option>
+      <option value="most_recent">Most Recent</option>
+    </select>
+  </div>
   <div ng-repeat="movie in movies" class="col-md-4 col-sm-6 col-xs-12">
   <div class="movie-container">
   <a href="/movie/{{movie.youtubeId}}">
