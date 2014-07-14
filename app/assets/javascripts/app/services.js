@@ -58,7 +58,7 @@ services_module.service('MoviesService',
 })
 
 services_module.service('UserService', 
-     function($rootScope, $q, $cookieStore) {
+     function($rootScope, $q, $cookieStore, $http) {
        var service = this;
        this._user = null;
        this.setCurrentUser = function(u) {
@@ -80,23 +80,55 @@ services_module.service('UserService',
          return d.promise;
        };
 
-       this.login = function(email) {
+      this.login = function(params) {
          var d = $q.defer();
-         var user = {
-           email: email,
-           id: 1
-         };
-
-         service.setCurrentUser(user);
-         d.resolve(user);
+         $http({
+           url: '/users/sign_in',
+           method: 'POST',
+           data: {
+             user: params
+           }
+         }).success(function(response) { 
+           console.log(response);
+           if(response.success) {
+             var user = response.data.user;
+             user.auth_token = response.data.auth_token; // talk about this
+             service.setCurrentUser(user);
+             d.resolve(user);
+           } else {
+             d.reject(response)
+           }
+         }).error(function(reason) { 
+           d.reject(reason);
+         });
          return d.promise;
        };
+
        this.logout = function() {
          var d = $q.defer();
          service._user = null;
          $cookieStore.remove('user');
          $rootScope.$broadcast("user:unset");
          d.resolve();
+         return d.promise;
+       };
+
+       this.signup = function(params) {
+         var d = $q.defer();
+         $http({
+           url: '/users',
+           method: 'POST',
+           data: {
+             user: params
+           }
+         }).success(function(response) { 
+           var user = response.data.user;
+           user.auth_token = response.data.auth_token; // talk about this
+           service.setCurrentUser(user);
+           d.resolve(user);
+         }).error(function(reason) { 
+           d.reject(reason);
+         });
          return d.promise;
        };
     });

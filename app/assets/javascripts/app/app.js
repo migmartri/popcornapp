@@ -1,5 +1,5 @@
 (function(){
-  app = angular.module('popcornApp', ['ngRoute', 'ngCookies', 'popcornApp.controllers', 'popcornApp.services', 'popcornApp.directives', 'popcornApp.resources']);
+  app = angular.module('popcornApp', ['ngRoute', 'ngCookies', 'popcornApp.controllers', 'popcornApp.services', 'popcornApp.directives', 'popcornApp.resources', 'popcornApp.interceptors']);
 
   app.config(function($routeProvider, $locationProvider) {
     $routeProvider
@@ -23,6 +23,10 @@
         })
       .otherwise({redirectTo: '/'});
     $locationProvider.html5Mode(true);
+  });
+
+  app.config(function($httpProvider) {
+    $httpProvider.interceptors.push('UserAuthInterceptor');
   });
 
   app.run(function($injector) {
