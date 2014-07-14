@@ -1,5 +1,5 @@
 (function(){
-  app = angular.module('popcornApp', ['ngRoute', 'ngCookies', 'popcornApp.controllers', 'popcornApp.services', 'popcornApp.directives']);
+  app = angular.module('popcornApp', ['ngRoute', 'ngCookies', 'popcornApp.controllers', 'popcornApp.services', 'popcornApp.directives', 'popcornApp.resources']);
 
   app.config(function($routeProvider, $locationProvider) {
     $routeProvider
@@ -25,4 +25,8 @@
     $locationProvider.html5Mode(true);
   });
 
+  app.run(function($injector) {
+      window.Movie = $injector.get("Movie");
+        window.Favorite = $injector.get("Favorite");
+  });
 })();

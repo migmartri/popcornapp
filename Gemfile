@@ -8,6 +8,7 @@ gem 'rails', '4.1.3'
 gem 'angularjs-rails', "=1.2.6"
 gem 'bootstrap-sass-rails', "=3.0.3.0"
 gem 'underscore-rails'
+gem 'angularjs-rails-resource', "=0.2.5"
 
 
 # Use sqlite3 as the database for Active Record
